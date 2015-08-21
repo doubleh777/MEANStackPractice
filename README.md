@@ -104,14 +104,14 @@ express는 디렉토리 구조에 중립적이다.
 
 var express = require('express');
 var hasName = function(req,res,next){
-    if(req.param('name')){
-        next();
-    } else {
-        res.send('What is your name?');
-    }
+    if(req.param('name')){
+	 next();
+    } else {
+	 res.send('What is your name?');
+    }
 };
 var sayHello = function(req,res,next){
-    res.send('Hello ' + req.param('name'));
+    res.send('Hello ' + req.param('name'));
 };
 var app = express();
 app.get('/', hasName, sayHello);
