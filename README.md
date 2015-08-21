@@ -127,29 +127,29 @@ process.env속성은 전역 변수이며, 미리 정의된 환경 변수에 대�
 
 morgan모듈은 단순한 로거 미들웨어를 제공하며, compression모듈은 응답 압축을 지원하고, body-parser모듈은 요청 데이터를 처리하며, method-override모듈은 DELETE나PUT과 같은 HTTP 메소드 기본 지원 기능을 제공한다.
 
-  1 var express = require('express'),
-  2     morgan = require('morgan'),
-  3     compress = require('compression'),
-  4     bodyParser = require('body-parser'),
-  5     methodOverride = require('method-override');
-  6 
-  7 module.exports = function(){
-  8     var app = express();
-  9     
- 10     if(process.env.NODE_ENV === 'development'){
- 11         app.use(morgan('dev'));
- 12     }else if(process.env.NODE_ENV === 'production'){
- 13         app.use(compress());
- 14     }
- 15     
- 16     app.use(bodyParser.urlencoded({
- 17         extended: true
- 18     }));
- 19     app.use(bodyParser.json());
- 20     
- 21     require('../app/routes/index.server.routes.js')(app); // route.js에서 app.get('/',~~~)방식으로 쓰기 위해서는
- 22     return app;						     //파라미터로 express를 담고있는 app을 전달해줘야함
- 23 };
+1 var express = require('express'),
+2     morgan = require('morgan'),
+3     compress = require('compression'),
+4     bodyParser = require('body-parser'),
+5     methodOverride = require('method-override');
+6 
+7 module.exports = function(){
+8     var app = express();
+9     
+10     if(process.env.NODE_ENV === 'development'){
+11         app.use(morgan('dev'));
+12     }else if(process.env.NODE_ENV === 'production'){
+13         app.use(compress());
+14     }
+15     
+16     app.use(bodyParser.urlencoded({
+17         extended: true
+18     }));
+19     app.use(bodyParser.json());
+20     
+21     require('../app/routes/index.server.routes.js')(app); // route.js에서 app.get('/',~~~)방식으로 쓰기 위해서는
+22     return app;						     //파라미터로 express를 담고있는 app을 전달해줘야함
+23 };
  
 위 코드를 보면 process.env.NODE_ENV를 체크하여 app의 환경에 따라 미들웨어를 적절히 마운트 할 수 있다.
 
@@ -167,4 +167,14 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'; 처럼 환경변�
 app.render()는 뷰를 생성하기 위해 사용되며, 콜백함수에 HTML을 전달한다. 더 일반적인 res.render()는 뷰를 지역적으로 생성하며, 응답으로 HTML을 전송한다. res.render()를 더 자주 사용하는 이유는 흔히 응답으로 HTML 출력을 원하기 때문이다. 하지만 애플리케이션이 HTML 이메일을 전송하기를 원한다면, app.render()를 사용해야한다.
 
  app.set('view','../app/views'); //views폴더 내부에서 render()할 view를 찾도록 views폴더를 설정해줌.
- app.set('view engine', 'ejs'); //
+ app.set('view engine', 'ejs'); //템플릿 변수를 설정하는 것이다. 이 변수를 이용해 뷰 엔진을 써서 뷰를 생성할 것이다.
+위와 같은 방식으로 view폴더를 설정하고 view engine을 등록 할 수 있다.
+
+
+정적 파일  서비스
+app.use(express.static('./public'))과 같이 미들웨어를 등록한다. 
+이후 ejs파일에서 그냥 img/logo.png를 src로 써주기만하면 public폴더에서 logo.png를 찾아 넣어준다.
+
+
+session이용하는 방법(p113~114) 참고
+
