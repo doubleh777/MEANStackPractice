@@ -102,21 +102,21 @@ express는 디렉토리 구조에 중립적이다.
 
 유효성 검증 패턴
 
-var express = require('express');
-var hasName = function(req,res,next){
-    if(req.param('name')){
-	 next();
-    } else {
-	 res.send('What is your name?');
-    }
-};
-var sayHello = function(req,res,next){
-    res.send('Hello ' + req.param('name'));
-};
-var app = express();
-app.get('/', hasName, sayHello);
-app.listen(3000);
-console.log('Server runnint at http://localhost:3000/');
+* 1 var express = require('express');
+* 2 var hasName = function(req,res,next){
+* 3    if(req.param('name')){
+* 4	 next();
+* 5    } else {
+* 6	 res.send('What is your name?');
+* 7    }
+* 8 };
+* 9 var sayHello = function(req,res,next){
+* 10     res.send('Hello ' + req.param('name'));
+* 11 };
+* var app = express();
+* app.get('/', hasName, sayHello);
+* app.listen(3000);
+* console.log('Server runnint at http://localhost:3000/');
 
 위 코드에서 app.get()을 통해 hasName과 sayHello 미들웨어를 등록하고있다. 그리고 hasName에서 param('name') 값이 있는지를 확인하고 있으면 다음 미들웨어로 넘기고 그렇지 않으면 넘기지 않는 방식으로 유효성을 검증하는 패턴.
 
@@ -127,29 +127,29 @@ process.env속성은 전역 변수이며, 미리 정의된 환경 변수에 대�
 
 morgan모듈은 단순한 로거 미들웨어를 제공하며, compression모듈은 응답 압축을 지원하고, body-parser모듈은 요청 데이터를 처리하며, method-override모듈은 DELETE나PUT과 같은 HTTP 메소드 기본 지원 기능을 제공한다.
 
-1 var express = require('express'),
-2     morgan = require('morgan'),
-3     compress = require('compression'),
-4     bodyParser = require('body-parser'),
-5     methodOverride = require('method-override');
-6 
-7 module.exports = function(){
-8     var app = express();
-9     
-10     if(process.env.NODE_ENV === 'development'){
-11         app.use(morgan('dev'));
-12     }else if(process.env.NODE_ENV === 'production'){
-13         app.use(compress());
-14     }
-15     
-16     app.use(bodyParser.urlencoded({
-17         extended: true
-18     }));
-19     app.use(bodyParser.json());
-20     
-21     require('../app/routes/index.server.routes.js')(app); // route.js에서 app.get('/',~~~)방식으로 쓰기 위해서는
-22     return app;						     //파라미터로 express를 담고있는 app을 전달해줘야함
-23 };
+* 1 var express = require('express'),
+* 2     morgan = require('morgan'),
+* 3     compress = require('compression'),
+* 4     bodyParser = require('body-parser'),
+* 5     methodOverride = require('method-override');
+* 6 
+* 7 module.exports = function(){
+* 8     var app = express();
+* 9     
+* 10     if(process.env.NODE_ENV === 'development'){
+* 11         app.use(morgan('dev'));
+* 12     }else if(process.env.NODE_ENV === 'production'){
+* 13         app.use(compress());
+* 14     }
+* 15     
+* 16     app.use(bodyParser.urlencoded({
+* 17         extended: true
+* 18     }));
+* 19     app.use(bodyParser.json());
+* 20     
+* 21     require('../app/routes/index.server.routes.js')(app); // route.js에서 app.get('/',~~~)방식으로 쓰기 위해서는
+* 22     return app;						     //파라미터로 express를 담고있는 app을 전달해줘야함
+* 23 };
  
 위 코드를 보면 process.env.NODE_ENV를 체크하여 app의 환경에 따라 미들웨어를 적절히 마운트 할 수 있다.
 
