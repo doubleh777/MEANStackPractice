@@ -113,10 +113,10 @@ express는 디렉토리 구조에 중립적이다.
 * 9 var sayHello = function(req,res,next){
 * 10     res.send('Hello ' + req.param('name'));
 * 11 };
-* var app = express();
-* app.get('/', hasName, sayHello);
-* app.listen(3000);
-* console.log('Server runnint at http://localhost:3000/');
+* 12 var app = express();
+* 13 app.get('/', hasName, sayHello);
+* 14 app.listen(3000);
+* 15 console.log('Server runnint at http://localhost:3000/');
 
 위 코드에서 app.get()을 통해 hasName과 sayHello 미들웨어를 등록하고있다. 그리고 hasName에서 param('name') 값이 있는지를 확인하고 있으면 다음 미들웨어로 넘기고 그렇지 않으면 넘기지 않는 방식으로 유효성을 검증하는 패턴.
 
